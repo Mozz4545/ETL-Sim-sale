@@ -157,7 +157,7 @@ class LoginScreen extends StatelessWidget {
               // ส่วนกลางสำหรับล็อกอิน
               Center(
                 child: Container(
-                  width: 350,
+                  width: 400,
                   padding: const EdgeInsets.all(24),
                   margin: const EdgeInsets.symmetric(vertical: 32),
                   decoration: BoxDecoration(
