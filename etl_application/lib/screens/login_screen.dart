@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:etl_application/screens/dashboard_screen.dart';
+import 'package:etl_application/screens/history_screen.dart';
 import 'package:etl_application/widgets/tab_menu_widgets.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -102,6 +103,16 @@ class LoginScreen extends StatelessWidget {
                         'ຄຳສັ່ງຊື້ FTTH',
                         'ປະຫວັດການສັ່ງຊື້',
                       ],
+                      onItemSelected: (selected) {
+                        if (selected == 'ປະຫວັດການສັ່ງຊື້') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HistoryScreen(),
+                            ),
+                          );
+                        }
+                      },
                     ),
                     TabDropdownMenu(
                       title: 'ບັນຊີຂອງຂ້ອຍ',
@@ -215,5 +226,3 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
-
-// ...existing code...

@@ -28,7 +28,12 @@ class TabMenuItem extends StatelessWidget {
 class TabDropdownMenu extends StatelessWidget {
   final String title;
   final List<String> items;
-  const TabDropdownMenu({required this.title, required this.items});
+  final void Function(String)? onItemSelected;
+  const TabDropdownMenu({
+    required this.title,
+    required this.items,
+    this.onItemSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +70,11 @@ class TabDropdownMenu extends StatelessWidget {
                 ),
               )
               .toList(),
-          onChanged: (value) {},
+          onChanged: (value) {
+            if (value != null && onItemSelected != null) {
+              onItemSelected!(value);
+            }
+          },
           icon: const Icon(Icons.arrow_drop_down),
         ),
       ),
