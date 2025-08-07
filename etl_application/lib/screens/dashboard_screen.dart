@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:etl_application/widgets/tab_menu_widgets.dart';
+import 'package:etl_application/core/widgets/tab_menu_widgets.dart';
 import 'package:etl_application/screens/login_screen.dart';
 
 class DashboardScreen extends StatelessWidget {

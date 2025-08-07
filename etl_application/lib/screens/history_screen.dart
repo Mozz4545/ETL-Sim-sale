@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/tab_menu_widgets.dart';
+import '../core/widgets/tab_menu_widgets.dart';
 
 class HistoryScreen extends StatelessWidget {
   final List<Map<String, String>> orderHistory = [
