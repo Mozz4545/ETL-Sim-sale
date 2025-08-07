@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:etl_application/widgets/tab_menu_widgets.dart';
+import 'package:etl_application/screens/login_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -121,7 +122,14 @@ class DashboardScreen extends StatelessWidget {
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    );
+                  },
                   child: const Text('ເຂົ້າສູ່ລະບົບ'),
                 ),
                 const SizedBox(width: 16),
