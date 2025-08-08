@@ -3,7 +3,7 @@ import 'package:etl_application/core/widgets/tab_menu_widgets.dart';
 import 'package:etl_application/screens/login_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+  const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

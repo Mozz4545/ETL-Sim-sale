@@ -23,6 +23,8 @@ class HistoryScreen extends StatelessWidget {
     },
   ];
 
+  HistoryScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

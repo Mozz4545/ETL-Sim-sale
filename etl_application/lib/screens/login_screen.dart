@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:etl_application/screens/dashboard_screen.dart';
+import 'package:etl_application/features/home/dashboard_screen.dart';
 import 'package:etl_application/screens/history_screen.dart';
 import 'package:etl_application/core/widgets/tab_menu_widgets.dart';
 

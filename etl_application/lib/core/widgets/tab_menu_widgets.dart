@@ -4,7 +4,12 @@ class TabMenuItem extends StatelessWidget {
   final String title;
   final bool lao;
   final VoidCallback? onPressed;
-  const TabMenuItem({required this.title, this.lao = false, this.onPressed});
+  const TabMenuItem({
+    super.key,
+    required this.title,
+    this.lao = false,
+    this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +35,7 @@ class TabDropdownMenu extends StatelessWidget {
   final List<String> items;
   final void Function(String)? onItemSelected;
   const TabDropdownMenu({
+    super.key,
     required this.title,
     required this.items,
     this.onItemSelected,
