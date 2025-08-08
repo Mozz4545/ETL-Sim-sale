@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "102219512141",
+    "project_id": "etl-project-bd7fa",
+    "storage_bucket": "etl-project-bd7fa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102219512141:android:e355cd9c33d2adfce5df04",
+        "android_client_info": {
+          "package_name": "com.etl.simstore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQgjRACjKzAfKPhqhyaoU4ZXERTsZZDO4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102219512141:android:a0c6afb0fde5c330e5df04",
+        "android_client_info": {
+          "package_name": "com.example.etl_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQgjRACjKzAfKPhqhyaoU4ZXERTsZZDO4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

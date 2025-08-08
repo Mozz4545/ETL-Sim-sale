@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:etl_application/screens/login_screen.dart';
 import 'package:etl_application/screens/dashboard_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+// นำเข้า DefaultFirebaseOptions ที่สร้างโดย FlutterFire CLI
+import 'firebase_options.dart'; // ไฟล์นี้จะถูกสร้างโดย FlutterFire CLI
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions
+        .currentPlatform, // ใช้ตัวเลือกที่เหมาะสมกับแพลตฟอร์ม
+  );
   runApp(const MyApp());
 }
 
