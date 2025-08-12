@@ -16,7 +16,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // วิดเจ็ตนี้เป็นรากของแอปพลิเคชันของคุณ
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
