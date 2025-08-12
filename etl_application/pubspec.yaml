@@ -21,12 +21,6 @@ version: 1.0.0+1
 environment:
   sdk: ^3.8.1
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
@@ -36,44 +30,36 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # Firebase & other packages
-  firebase_core: ^2.32.0
-  firebase_auth: ^4.16.0
+  firebase_core: ^4.0.0
+  firebase_auth: ^6.0.0
   google_sign_in: ^7.1.1
-  flutter_facebook_auth: ^6.0.4
-  cloud_firestore: ^4.17.5
+  flutter_facebook_auth: ^7.1.2
+  cloud_firestore: ^6.0.0
   provider: ^6.1.5
   http: ^1.2.1
-  firebase_storage: ^11.6.5
-  firebase_app_check: ^0.2.2
+  firebase_storage: ^13.0.0
+  firebase_app_check: ^0.4.0
   flutter_riverpod: ^2.6.1
   image_picker: ^1.1.2
   file_picker: ^10.2.2
+  google_fonts: ^6.2.0
 
-dev_dependencies:
-  flutter:
-    sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
-assets:
-  - assets/ETL_logo.jpg 
-fonts:
-  - family: Phetsalath_OT
-    fonts:
-      - asset: fonts/Phetsalath_OT.ttf
-# The following line ensures that the Material Icons font is
-# included with your application, so that you can use the icons in
-# the material Icons class.
-uses-material-design: true
-
-
+  uses-material-design: true
+  assets:
+    - assets/ETL_logo.jpg
