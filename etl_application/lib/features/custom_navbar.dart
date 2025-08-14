@@ -4,8 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onCartPressed;
   final VoidCallback? onLanguagePressed;
+  final VoidCallback? onHomePressed;
 
-  const CustomNavbar({super.key, this.onCartPressed, this.onLanguagePressed});
+  const CustomNavbar({
+    super.key,
+    this.onCartPressed,
+    this.onLanguagePressed,
+    this.onHomePressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -168,11 +174,14 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                     const SizedBox(width: 24),
                     ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/login');
+                      },
                       icon: const Icon(Icons.login, size: 16),
-                      label: Text(
+                      label: const Text(
                         'ເຂົ້າສູ່ລະບົບ',
-                        style: GoogleFonts.notoSansLaoLooped(
+                        style: TextStyle(
+                          fontFamily: 'Phetsarath OT',
                           color: Colors.white,
                         ),
                       ),
@@ -274,7 +283,7 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
                   style: GoogleFonts.notoSansLaoLooped(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 15, // เพิ่มขนาดตัวอักษร
+                    fontSize: 15,
                   ),
                 ),
               );
@@ -306,7 +315,7 @@ class MyHomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // ...widget ของคุณ...
+            // ...widget
           ],
         ),
       ),
@@ -343,7 +352,7 @@ class _HoverMenuButtonState extends State<_HoverMenuButton> {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
-            onPressed: () {}, // เปลี่ยนจาก null เป็นฟังก์ชันว่าง
+            onPressed: () {},
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

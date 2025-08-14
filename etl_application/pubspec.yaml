@@ -62,4 +62,5 @@ dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/ETL_logo.jpg
+    - assets/
+
