@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../custom_navbar.dart'; // นำเข้า CustomNavbar
+import 'sign_up_screen.dart'; // นำเข้า SignUpScreen
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Login Screen',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        fontFamily: 'Phetsarath OT', // ใช้ฟอนต์ Phetsarath OT
+        fontFamily: 'Phetsarath OT,Noto Sans Lao', // ใช้ฟอนต์ Phetsarath OT
       ),
       home: const LoginScreen(),
     );
@@ -101,6 +102,32 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const SocialLoginButtons(),
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "ຍັງບໍ່ມີບັນຊີ?",
+                      style: TextStyle(fontFamily: 'Phetsarath OT'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          fontFamily: 'Phetsarath OT',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -122,10 +149,14 @@ class SocialLoginButtons extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ElevatedButton.icon(
-            icon: Image.network(
-              'https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png',
+            icon: SizedBox(
               height: 20,
               width: 20,
+              child: Image.asset(
+                'assets/icons/facebook.png', // ใช้โลโก้ Facebook จาก assets
+                fit: BoxFit.contain,
+                color: Colors.white,
+              ),
             ),
             label: const Text(
               'Login ຜ່ານ Facebook',
@@ -150,13 +181,14 @@ class SocialLoginButtons extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           ElevatedButton.icon(
-            // icon: Image.asset(
-            //    'assets/Google.png', // ใช้ asset แทน network
-            // height: 18,
-            //width: 18,
-            //),
+            icon: Image.asset(
+              'assets/icons/email.png', // โลโก้ mailbox สีขาว
+              height: 20,
+              width: 20,
+              color: Colors.white,
+            ),
             label: const Text(
-              'Login ຜ່ານ Google',
+              'Login ຜ່ານ Gmail',
               style: TextStyle(
                 fontFamily: 'Phetsarath OT',
                 fontWeight: FontWeight.bold,
@@ -174,7 +206,7 @@ class SocialLoginButtons extends StatelessWidget {
               elevation: 3,
             ),
             onPressed: () {
-              // TODO: handle Google login
+              // TODO: handle Mail login
             },
           ),
         ],

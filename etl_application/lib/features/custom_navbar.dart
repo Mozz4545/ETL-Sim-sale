@@ -5,12 +5,14 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onCartPressed;
   final VoidCallback? onLanguagePressed;
   final VoidCallback? onHomePressed;
+  final VoidCallback? onLoginPressed;
 
   const CustomNavbar({
     super.key,
     this.onCartPressed,
     this.onLanguagePressed,
     this.onHomePressed,
+    this.onLoginPressed, // เพิ่มตรงนี้
   });
 
   @override
@@ -122,7 +124,7 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
                     Row(
                       children: [
                         _buildMenuButton('ໜ້າຫຼັກ'),
-                        _buildMenuButton('ຂໍ້ມູນຕິດຕໍ່'),
+                        _buildMenuButton('ຊິມກາດ'),
                         _buildMenuButton('ແພັກເກດຂໍ້ມູນ'),
                         _buildDropdownMenu('FTTH', ['FTTH', 'FTTH Via CPE']),
                         _buildDropdownMenu('ລາຍການສັ່ງຊື້', [

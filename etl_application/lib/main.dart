@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'features/home/pages/home_page.dart';
-import 'features/auth/pages/login_screen.dart';
+import 'features/auth/pages/login_screen.dart'; // เพิ่มบรรทัดนี้
 
 void main() {
   runApp(const MyApp());
@@ -13,15 +13,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ETL Sim Sale',
+      title: 'ETL Application',
       theme: ThemeData(
-        textTheme: GoogleFonts.notoSerifLaoTextTheme(),
+        textTheme: GoogleFonts.notoSansLaoTextTheme(),
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      home: const HomePage(),
       routes: {
-        '/': (context) => const HomePage(),
-        '/login': (context) => const LoginScreen(),
+        '/login': (context) => const LoginScreen(), // เพิ่มบรรทัดนี้
       },
     );
   }
