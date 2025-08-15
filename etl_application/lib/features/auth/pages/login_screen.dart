@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'Phetsarath OT',
                     fontWeight: FontWeight.bold,
-                    fontSize: 24, // ลดขนาดฟอนต์
+                    fontSize: 30, // ลดขนาดฟอนต์
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -87,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                       // TODO: handle login
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 0, 149, 255),
+                      backgroundColor: const Color.fromARGB(255, 22, 53, 134),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     child: const Text(
@@ -152,16 +152,12 @@ class SocialLoginButtons extends StatelessWidget {
             icon: SizedBox(
               height: 20,
               width: 20,
-              child: Image.asset(
-                'assets/icons/facebook.png', // ใช้โลโก้ Facebook จาก assets
-                fit: BoxFit.contain,
-                color: Colors.white,
-              ),
+              child: const Icon(Icons.facebook, color: Colors.white),
             ),
             label: const Text(
               'Login ຜ່ານ Facebook',
               style: TextStyle(
-                fontFamily: 'Phetsarath OT',
+                fontFamily: 'Noto Sans Lao',
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
                 color: Colors.white,
@@ -181,16 +177,11 @@ class SocialLoginButtons extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           ElevatedButton.icon(
-            icon: Image.asset(
-              'assets/icons/email.png', // โลโก้ mailbox สีขาว
-              height: 20,
-              width: 20,
-              color: Colors.white,
-            ),
+            icon: const Icon(Icons.mail, color: Colors.white),
             label: const Text(
               'Login ຜ່ານ Gmail',
               style: TextStyle(
-                fontFamily: 'Phetsarath OT',
+                fontFamily: 'Noto Sans Lao',
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
                 color: Color.fromARGB(221, 255, 255, 255),

@@ -88,10 +88,62 @@ class SignUpScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              buildSocialSignUpButtons(),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+Widget buildSocialSignUpButtons() {
+  return Padding(
+    padding: const EdgeInsets.only(top: 16.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton.icon(
+          onPressed: () {
+            // TODO: handle Facebook sign up
+          },
+          icon: const Icon(Icons.facebook, color: Colors.white),
+          label: const Text(
+            'Facebook',
+            style: TextStyle(fontFamily: 'Phetsarath OT', color: Colors.white),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF1877F3),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        ElevatedButton.icon(
+          onPressed: () {
+            // TODO: handle Gmail sign up
+          },
+          icon: const Icon(Icons.mail, color: Colors.white),
+          label: const Text(
+            'Gmail',
+            style: TextStyle(
+              fontFamily: 'Phetsarath OT',
+              color: Color.fromARGB(221, 255, 255, 255),
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+            foregroundColor: const Color.fromARGB(221, 255, 255, 255),
+            side: const BorderSide(color: Colors.grey),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }

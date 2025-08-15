@@ -3,14 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onCartPressed;
-  final VoidCallback? onLanguagePressed;
   final VoidCallback? onHomePressed;
   final VoidCallback? onLoginPressed;
 
   const CustomNavbar({
     super.key,
     this.onCartPressed,
-    this.onLanguagePressed,
     this.onHomePressed,
     this.onLoginPressed, // เพิ่มตรงนี้
   });
@@ -126,7 +124,6 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
                         _buildMenuButton('ໜ້າຫຼັກ'),
                         _buildMenuButton('ຊິມກາດ'),
                         _buildMenuButton('ແພັກເກດຂໍ້ມູນ'),
-                        _buildDropdownMenu('FTTH', ['FTTH', 'FTTH Via CPE']),
                         _buildDropdownMenu('ລາຍການສັ່ງຊື້', [
                           'ເບິ່ງຄຳສັ່ງຊື້ FTTH',
                           'ຄຳສັ່ງຊື້ສຳລັບຊິມກາດ',
@@ -197,13 +194,6 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.language,
-                        color: Color.fromARGB(255, 0, 149, 255),
-                      ),
-                      onPressed: onLanguagePressed,
-                    ),
                   ],
                 ),
               ],
