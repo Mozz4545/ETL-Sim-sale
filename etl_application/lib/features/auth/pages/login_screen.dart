@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../custom_navbar.dart'; // นำเข้า CustomNavbar
+import '../../home/controllers/custom_navbar.dart'; // นำเข้า CustomNavbar
 import 'sign_up_screen.dart'; // นำเข้า SignUpScreen
 
 void main() {
@@ -87,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                       // TODO: handle login
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 22, 53, 134),
+                      backgroundColor: const Color.fromARGB(255, 0, 149, 255),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     child: const Text(
@@ -101,8 +101,26 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 8), // เพิ่มระยะห่าง
+                // ปุ่ม "ລືມລະຫັດຜ່ານ?"
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      // TODO: handle forgot password
+                    },
+                    child: const Text(
+                      'ລືມລະຫັດຜ່ານ?',
+                      style: TextStyle(
+                        fontFamily: 'Phetsarath OT',
+                        color: Color.fromARGB(255, 0, 149, 255),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
                 const SocialLoginButtons(),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

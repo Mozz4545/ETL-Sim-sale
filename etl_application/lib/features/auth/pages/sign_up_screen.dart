@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../custom_navbar.dart'; // นำเข้า CustomNavbar
+import '../../home/controllers/custom_navbar.dart'; // นำเข้า CustomNavbar
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -66,9 +66,10 @@ class SignUpScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 22),
               SizedBox(
                 width: double.infinity,
+                height: 35,
                 child: ElevatedButton(
                   onPressed: () {
                     // TODO: handle sign up
@@ -76,6 +77,9 @@ class SignUpScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: const Text(
                     'ລົງທະບຽນ',
@@ -103,43 +107,72 @@ Widget buildSocialSignUpButtons() {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ElevatedButton.icon(
-          onPressed: () {
-            // TODO: handle Facebook sign up
-          },
-          icon: const Icon(Icons.facebook, color: Colors.white),
-          label: const Text(
-            'Facebook',
-            style: TextStyle(fontFamily: 'Phetsarath OT', color: Colors.white),
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF1877F3),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+        // Facebook Button
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: () {
+              // TODO: handle Facebook sign up
+            },
+            icon: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              padding: const EdgeInsets.all(4),
+              child: Icon(Icons.facebook, color: Color(0xFF1877F3), size: 20),
+            ),
+            label: const Text(
+              'Facebook',
+              style: TextStyle(
+                fontFamily: 'Phetsarath OT',
+                color: Color(0xFF1877F3),
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              side: const BorderSide(color: Color(0xFF1877F3), width: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 0,
             ),
           ),
         ),
-        const SizedBox(width: 16),
-        ElevatedButton.icon(
-          onPressed: () {
-            // TODO: handle Gmail sign up
-          },
-          icon: const Icon(Icons.mail, color: Colors.white),
-          label: const Text(
-            'Gmail',
-            style: TextStyle(
-              fontFamily: 'Phetsarath OT',
-              color: Color.fromARGB(221, 255, 255, 255),
+        const SizedBox(width: 12),
+        // Gmail Button
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: () {
+              // TODO: handle Gmail sign up
+            },
+            icon: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              padding: const EdgeInsets.all(4),
+              child: Icon(Icons.mail, color: Colors.red, size: 20),
             ),
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 255, 0, 0),
-            foregroundColor: const Color.fromARGB(221, 255, 255, 255),
-            side: const BorderSide(color: Colors.grey),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+            label: const Text(
+              'Gmail',
+              style: TextStyle(
+                fontFamily: 'Phetsarath OT',
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              side: const BorderSide(color: Colors.red, width: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 0,
             ),
           ),
         ),
