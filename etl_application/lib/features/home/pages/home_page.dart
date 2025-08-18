@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../custom_navbar.dart';
+import '../controllers/custom_navbar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,7 +9,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: CustomNavbar(
         onCartPressed: () {},
-        onLanguagePressed: () {},
         onHomePressed: () {
           Navigator.of(context).popUntil((route) => route.isFirst);
         },

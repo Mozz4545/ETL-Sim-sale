@@ -223,7 +223,7 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
             style: GoogleFonts.notoSansLaoLooped(
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 15, // เพิ่มขนาดตัวอักษร
+              fontSize: 15,
             ),
           ),
         ),
@@ -250,7 +250,7 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
             style: GoogleFonts.notoSansLaoLooped(
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 15, // เพิ่มขนาดตัวอักษร
+              fontSize: 15,
             ),
             hint: Align(
               alignment: Alignment.centerLeft,
@@ -259,7 +259,7 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
                 style: GoogleFonts.notoSansLaoLooped(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 15, // เพิ่มขนาดตัวอักษร
+                  fontSize: 15,
                 ),
               ),
             ),
@@ -299,9 +299,6 @@ class MyHomePage extends StatelessWidget {
       appBar: CustomNavbar(
         onCartPressed: () {
           // TODO: handle cart pressed
-        },
-        onLanguagePressed: () {
-          // TODO: handle language pressed
         },
       ),
       body: SingleChildScrollView(
