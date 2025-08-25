@@ -11,7 +11,7 @@ import 'features/history/pages/order_detail_page.dart';
 import 'features/history/pages/order_history_page.dart';
 import 'features/sim_store/pages/sim_store_page.dart';
 import 'features/checkout/pages/checkout_page.dart';
-import 'session_demo_page.dart';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 void main() async {
@@ -58,7 +58,6 @@ class MyApp extends ConsumerWidget {
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignUpScreen(),
         '/home': (context) => const HomePage(),
-        '/session-demo': (context) => const SessionDemoPage(),
         '/order-history': (context) => const OrderHistoryPage(),
         '/order-detail': (context) => const OrderDetailPage(),
         '/sim-store': (context) => const SimStorePage(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../controllers/custom_navbar_logout.dart';
+import 'package:url_launcher/url_launcher.dart'; // เพิ่มบรรทัดนี้
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -20,11 +21,41 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             // Banner
-            Image.asset(
-              'assets/banner.jpg',
+            Container(
               width: double.infinity,
-              fit: BoxFit.cover,
-              height: 150,
+              height:
+                  MediaQuery.of(context).size.width *
+                  0.25, // อัตราส่วน 4:1 (2560:640)
+              decoration: const BoxDecoration(color: Colors.grey),
+              child: Image.asset(
+                'assets/banner1.jpg',
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.width * 0.25,
+                    color: Colors.grey[300],
+                    child: const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.image_not_supported,
+                            size: 40,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Banner image not found',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
             // ปุ่ม 3 ปุ่ม
             Padding(
@@ -113,7 +144,7 @@ class HomePage extends StatelessWidget {
                                 context: context,
                                 builder: (context) => AlertDialog(
                                   title: const Text('Wait...'),
-                                  content: const Text('ຊິມຂາຍຫມົດແລ້ວ!'),
+                                  content: const Text('ບອກອ້າຍນົນອາບນ້ຳກ່ອນ'),
                                   actions: [
                                     TextButton(
                                       onPressed: () => Navigator.pop(context),
@@ -270,6 +301,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
-  void launchUrl(Uri parse) {}
 }

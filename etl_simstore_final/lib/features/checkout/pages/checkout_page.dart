@@ -206,7 +206,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                     // Order Summary
                     _buildSectionTitle('ສະຫຼຸບການສັ່ງຊື້'),
                     const SizedBox(height: 12),
-                    ...cart.map((item) => _buildOrderItem(item)),
+                    _buildOrderList(context),
                     const SizedBox(height: 16),
 
                     // Total
@@ -336,63 +336,110 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
     );
   }
 
-  Widget _buildOrderItem(CartItem item) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.simNumber,
-                  style: GoogleFonts.notoSansLao(fontWeight: FontWeight.w600),
+  Widget _buildOrderList(BuildContext context) {
+    final cart = ref.watch(cartProvider);
+
+    if (cart.isEmpty) {
+      return Center(
+        child: Text(
+          'ຍັງບໍ່ມີສິນຄ້າ',
+          style: GoogleFonts.notoSansLao(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey[600],
+          ),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: cart.length,
+      itemBuilder: (context, index) {
+        final item = cart[index];
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.simNumber,
+                      style: GoogleFonts.notoSansLao(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      item.packageName,
+                      style: GoogleFonts.notoSansLao(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  item.packageName,
-                  style: GoogleFonts.notoSansLao(
-                    fontSize: 12,
-                    color: Colors.grey[600],
-                  ),
+              ),
+              Text(
+                'x${item.quantity}',
+                style: GoogleFonts.notoSansLao(
+                  fontSize: 14,
+                  color: Colors.grey[600],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '${item.totalPrice.toStringAsFixed(0)} ກີບ',
+                style: GoogleFonts.notoSansLao(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: Colors.green[700],
+                ),
+              ),
+            ],
           ),
-          Text(
-            'x${item.quantity}',
-            style: GoogleFonts.notoSansLao(color: Colors.grey[600]),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            '${item.totalPrice.toStringAsFixed(0)} ກີບ',
-            style: GoogleFonts.notoSansLao(
-              fontWeight: FontWeight.w600,
-              color: Colors.green[700],
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   Future<void> _submitOrder() async {
     if (!_formKey.currentState!.validate()) return;
 
+    final user = ref.read(authProvider).user;
+    if (user == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນ',
+              style: GoogleFonts.notoSansLao(),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     try {
-      final user = ref.read(authProvider).user;
-      if (user == null) {
-        throw Exception('User not authenticated');
-      }
-
       final cart = ref.read(cartProvider);
       final orderService = OrderService();
 

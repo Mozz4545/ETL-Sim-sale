@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/models/sim_card_model.dart';
-import '../data/datasources/sim_service.dart';
+import '../../data/models/sim_card_model.dart';
+import '../../data/datasources/sim_service.dart';
 
 // Service Provider
 final simServiceProvider = Provider<SimService>((ref) => SimService());

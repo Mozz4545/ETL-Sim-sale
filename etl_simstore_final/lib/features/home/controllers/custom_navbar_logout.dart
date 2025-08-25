@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../features/auth/service/auth_service.dart';
+import '../../checkout/pages/checkout_page.dart';
+import 'main_menu_bar.dart';
 
 class CustomNavbarLogout extends StatelessWidget
     implements PreferredSizeWidget {
@@ -142,8 +144,7 @@ class CustomNavbarLogout extends StatelessWidget
                               Navigator.pushNamed(context, '/sim-store'),
                         ),
                         _buildDropdownMenu(context, 'ລາຍການສັ່ງຊື້', {
-                          // ลบ 'ເບິ່ງຄຳສັ່ງຊື້ FTTH' ออกตามที่ขอ
-                          'ຄຳສັ່ງຊື້ສຳຫລັດຊິມກາດ':
+                          'ຄຳສັ່ງຊື້ສຳຫລັບຊິມກາດ':
                               '/cart', // เปลี่ยนไปหน้าตะกร้า
                           'ປະຫວັດການສັ່ງຊື້': '/order-history',
                         }),
@@ -168,12 +169,11 @@ class CustomNavbarLogout extends StatelessWidget
                             color: Color.fromARGB(255, 0, 149, 255),
                           ),
                           onPressed: () {
-                            if (onCartPressed != null) {
-                              onCartPressed!();
-                            } else {
-                              // Navigate to cart page
-                              Navigator.pushNamed(context, '/cart');
-                            }
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const CheckoutPage(),
+                              ),
+                            );
                           },
                         ),
                         Positioned(
@@ -490,3 +490,28 @@ class _HoverMenuButtonState extends State<_HoverMenuButton> {
 /*
   ปรับตำแหน่ง dropdown ให้สูงขึ้นอีกนิด โดยเพิ่ม margin ด้านบนใน Container ของ _buildDropdownMenu
 */
+
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const MainMenuBar(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // เนื้อหาอื่น ๆ
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                'Welcome to the Home Page!',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

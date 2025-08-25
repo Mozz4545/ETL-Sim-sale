@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../data/models/sim_card_model.dart';
-import '../../home/controllers/custom_navbar_logout.dart';
+import '../../data/models/sim_card_model.dart';
+import '../../../home/controllers/custom_navbar_logout.dart';
 import '../providers/sim_store_provider.dart';
-import '../presentation/pages/sim_detail_page.dart';
-import '../presentation/pages/cart_page.dart';
+import 'sim_detail_page.dart';
+import 'cart_page.dart';
 
 class SimStorePage extends ConsumerStatefulWidget {
   const SimStorePage({Key? key}) : super(key: key);

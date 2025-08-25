@@ -65,15 +65,21 @@ class _LoginScreenState extends State<LoginScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('ເກີດຂໍ້ຜິດພາດ',
-            style: TextStyle(fontFamily: 'NotoSansLao')),
-        content:
-            Text(message, style: const TextStyle(fontFamily: 'NotoSansLao')),
+        title: const Text(
+          'ເກີດຂໍ້ຜິດພາດ',
+          style: TextStyle(fontFamily: 'NotoSansLao'),
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(fontFamily: 'NotoSansLao'),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ຕົກລົງ',
-                style: TextStyle(fontFamily: 'NotoSansLao')),
+            child: const Text(
+              'ຕົກລົງ',
+              style: TextStyle(fontFamily: 'NotoSansLao'),
+            ),
           ),
         ],
       ),
@@ -84,15 +90,21 @@ class _LoginScreenState extends State<LoginScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title:
-            const Text('ສຳເລັດ', style: TextStyle(fontFamily: 'NotoSansLao')),
-        content:
-            Text(message, style: const TextStyle(fontFamily: 'NotoSansLao')),
+        title: const Text(
+          'ສຳເລັດ',
+          style: TextStyle(fontFamily: 'NotoSansLao'),
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(fontFamily: 'NotoSansLao'),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ຕົກລົງ',
-                style: TextStyle(fontFamily: 'NotoSansLao')),
+            child: const Text(
+              'ຕົກລົງ',
+              style: TextStyle(fontFamily: 'NotoSansLao'),
+            ),
           ),
         ],
       ),
@@ -112,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
+                color: Colors.black.withValues(alpha: 0.5),
                 blurRadius: 16,
                 offset: const Offset(0, 8),
               ),
@@ -314,9 +326,11 @@ class SocialLoginButtons extends StatelessWidget {
                   Navigator.pushReplacementNamed(context, '/home');
                 }
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(e.toString())),
-                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(e.toString())));
+                }
               }
             },
           ),

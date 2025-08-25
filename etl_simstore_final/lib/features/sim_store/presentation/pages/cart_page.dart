@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../features/home/controllers/custom_navbar_logout.dart';
+import '../../../home/controllers/custom_navbar_logout.dart';
 import '../providers/sim_store_provider.dart';
-import '../../checkout/pages/checkout_page.dart';
+import '../../../checkout/pages/checkout_page.dart';
 
 class CartPage extends ConsumerWidget {
   const CartPage({Key? key}) : super(key: key);

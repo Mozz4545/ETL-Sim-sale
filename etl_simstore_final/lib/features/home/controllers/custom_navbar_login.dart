@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'main_menu_bar.dart'; // นำเข้า MainMenuBar
 
 class CustomNavbarLogin extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onCartPressed;
@@ -296,15 +297,18 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomNavbarLogin(
-        onCartPressed: () {
-          // TODO: handle cart pressed
-        },
-      ),
-      body: const SingleChildScrollView(
+      appBar: const MainMenuBar(), // ใช้ MainMenuBar แทน AppBar
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            // ...widget
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: const Text(
+                'Welcome to the Login Page!',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // เพิ่มเนื้อหาอื่น ๆ ที่เกี่ยวข้อง
           ],
         ),
       ),
@@ -366,9 +370,7 @@ class _HoverMenuButtonState extends State<_HoverMenuButton> {
                           ),
                           maxLines: 1,
                           textDirection: TextDirection.ltr,
-                        )..layout())
-                          .size
-                          .width
+                        )..layout()).size.width
                       : 0,
                   margin: const EdgeInsets.only(top: 4),
                   decoration: BoxDecoration(
