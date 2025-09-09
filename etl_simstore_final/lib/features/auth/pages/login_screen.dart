@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../home/controllers/custom_navbar_login.dart';
+import '../../home/controllers/main_menu_bar.dart';
 import '../service/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -114,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomNavbarLogin(),
+      appBar: const MainMenuBar(),
       body: Center(
         child: Container(
           width: 400,

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../features/home/controllers/custom_navbar_logout.dart';
+import 'package:firebase_database/firebase_database.dart';
+import '../../home/controllers/main_menu_bar.dart';
 import '../../sim_store/providers/sim_store_provider.dart';
 import '../../auth/provider/auth_provider.dart';
-import '../services/order_service.dart';
+
+import '../../../core/models/order_model.dart' as models;
 
 class CheckoutPage extends ConsumerStatefulWidget {
-  const CheckoutPage({Key? key}) : super(key: key);
+  const CheckoutPage({super.key});
 
   @override
   ConsumerState<CheckoutPage> createState() => _CheckoutPageState();
@@ -20,6 +22,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
   final _notesController = TextEditingController();
 
   bool _isLoading = false;
+  models.PaymentMethod? _selectedPayment;
 
   @override
   void dispose() {
@@ -37,13 +40,13 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
 
     if (cart.isEmpty) {
       return Scaffold(
-        appBar: const CustomNavbarLogout(),
+        appBar: const MainMenuBar(),
         body: _buildEmptyCart(context),
       );
     }
 
     return Scaffold(
-      appBar: const CustomNavbarLogout(),
+      appBar: const MainMenuBar(),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -66,9 +69,9 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                 ),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.receipt_long,
-                      color: const Color.fromARGB(255, 22, 53, 134),
+                      color: Color.fromARGB(255, 22, 53, 134),
                       size: 24,
                     ),
                     const SizedBox(width: 12),
@@ -114,6 +117,53 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                             user.user?.email ?? '',
                             style: GoogleFonts.notoSansLao(
                               color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Payment Method
+                    _buildSectionTitle('ວິທີການຈ່າຍເງິນ'),
+                    const SizedBox(height: 12),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 2,
+                      child: Column(
+                        children: [
+                          RadioListTile<models.PaymentMethod>(
+                            value: models.PaymentMethod.cashOnDelivery,
+                            groupValue: _selectedPayment,
+                            onChanged: (val) =>
+                                setState(() => _selectedPayment = val),
+                            title: Text(
+                              'ຈ່າຍເງິນປາຍທາງ',
+                              style: GoogleFonts.notoSansLao(),
+                            ),
+                          ),
+                          const Divider(height: 1),
+                          RadioListTile<models.PaymentMethod>(
+                            value: models.PaymentMethod.bankTransfer,
+                            groupValue: _selectedPayment,
+                            onChanged: (val) =>
+                                setState(() => _selectedPayment = val),
+                            title: Text(
+                              'ໂອນຜ່ານທະນາຄານ',
+                              style: GoogleFonts.notoSansLao(),
+                            ),
+                          ),
+                          const Divider(height: 1),
+                          RadioListTile<models.PaymentMethod>(
+                            value: models.PaymentMethod.qrPayment,
+                            groupValue: _selectedPayment,
+                            onChanged: (val) =>
+                                setState(() => _selectedPayment = val),
+                            title: Text(
+                              'QR ພາຍໃນປະເທດ',
+                              style: GoogleFonts.notoSansLao(),
                             ),
                           ),
                         ],
@@ -206,7 +256,10 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                     // Order Summary
                     _buildSectionTitle('ສະຫຼຸບການສັ່ງຊື້'),
                     const SizedBox(height: 12),
-                    _buildOrderList(context),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 400),
+                      child: _buildOrderList(context),
+                    ),
                     const SizedBox(height: 16),
 
                     // Total
@@ -353,6 +406,8 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
     }
 
     return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: cart.length,
       itemBuilder: (context, index) {
         final item = cart[index];
@@ -421,8 +476,23 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
   Future<void> _submitOrder() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final user = ref.read(authProvider).user;
-    if (user == null) {
+    if (_selectedPayment == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'ກະລຸນາເລືອກວິທີຈ່າຍເງິນ',
+              style: GoogleFonts.notoSansLao(),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
+    final userObj = ref.read(authProvider).user;
+    if (userObj == null) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -440,18 +510,28 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
     setState(() => _isLoading = true);
 
     try {
-      final cart = ref.read(cartProvider);
-      final orderService = OrderService();
+      final cartItems = ref.read(cartProvider);
 
-      await orderService.createOrder(
-        userId: user.uid,
-        userEmail: user.email!,
-        userName: user.displayName,
-        phoneNumber: _phoneController.text,
-        deliveryAddress: _addressController.text,
-        notes: _notesController.text.isEmpty ? null : _notesController.text,
-        cartItems: cart,
-      );
+      final orderRef = FirebaseDatabase.instance.ref('orders').push();
+      await orderRef.set({
+        'userId': userObj.uid,
+        'userEmail': userObj.email ?? '',
+        'userName': userObj.displayName,
+        'phoneNumber': _phoneController.text,
+        'deliveryAddress': _addressController.text,
+        'notes': _notesController.text.isEmpty ? null : _notesController.text,
+        'paymentMethod': _selectedPayment!.toString(),
+        'cartItems': cartItems
+            .map(
+              (item) => {
+                'simNumber': item.simNumber,
+                'packageName': item.packageName,
+                'quantity': item.quantity,
+                'totalPrice': item.totalPrice,
+              },
+            )
+            .toList(),
+      });
 
       // Clear cart
       ref.read(cartProvider.notifier).clearCart();
@@ -508,4 +588,6 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
       }
     }
   }
+
+  // Removed misplaced import
 }

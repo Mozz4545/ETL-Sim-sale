@@ -23,6 +23,15 @@ enum OrderType {
   final String displayName;
 }
 
+enum PaymentMethod {
+  cashOnDelivery('ຈ່າຍເງິນປາຍທາງ'),
+  bankTransfer('ໂອນຜ່ານທະນາຄານ'),
+  qrPayment('QR ພາຍໃນປະເທດ');
+
+  const PaymentMethod(this.displayName);
+  final String displayName;
+}
+
 @immutable
 class OrderItem {
   final String id;
@@ -106,6 +115,7 @@ class Order {
   final String? phoneNumber;
   final OrderType type;
   final OrderStatus status;
+  final PaymentMethod? paymentMethod;
   final List<OrderItem> items;
   final double subtotal;
   final double tax;
@@ -126,6 +136,7 @@ class Order {
     this.phoneNumber,
     required this.type,
     required this.status,
+    this.paymentMethod,
     required this.items,
     required this.subtotal,
     required this.tax,
@@ -148,6 +159,7 @@ class Order {
       'phoneNumber': phoneNumber,
       'type': type.name,
       'status': status.name,
+      if (paymentMethod != null) 'paymentMethod': paymentMethod!.name,
       'items': items.map((item) => item.toJson()).toList(),
       'subtotal': subtotal,
       'tax': tax,
@@ -171,6 +183,9 @@ class Order {
       phoneNumber: json['phoneNumber'] as String?,
       type: OrderType.values.byName(json['type'] as String),
       status: OrderStatus.values.byName(json['status'] as String),
+      paymentMethod: (json['paymentMethod'] != null)
+          ? _parsePaymentMethod(json['paymentMethod'] as String)
+          : null,
       items: (json['items'] as List)
           .map((item) => OrderItem.fromJson(item as Map<String, dynamic>))
           .toList(),
@@ -199,6 +214,7 @@ class Order {
     String? phoneNumber,
     OrderType? type,
     OrderStatus? status,
+    PaymentMethod? paymentMethod,
     List<OrderItem>? items,
     double? subtotal,
     double? tax,
@@ -219,6 +235,7 @@ class Order {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       type: type ?? this.type,
       status: status ?? this.status,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
       items: items ?? this.items,
       subtotal: subtotal ?? this.subtotal,
       tax: tax ?? this.tax,
@@ -246,4 +263,13 @@ class Order {
 
   @override
   int get hashCode => id.hashCode;
+}
+
+PaymentMethod _parsePaymentMethod(String name) {
+  try {
+    return PaymentMethod.values.byName(name);
+  } catch (_) {
+    // Fallback for unknown/legacy values
+    return PaymentMethod.cashOnDelivery;
+  }
 }

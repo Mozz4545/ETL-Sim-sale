@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../home/controllers/custom_navbar_login.dart';
+import '../../home/controllers/main_menu_bar.dart';
 import '../service/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -89,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomNavbarLogin(),
+      appBar: const MainMenuBar(),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -291,7 +291,7 @@ class SocialSignUpButtons extends StatelessWidget {
               ),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(
+              backgroundColor: const Color.fromARGB(
                 255,
                 226,
                 17,

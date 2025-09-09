@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../data/models/sim_card_model.dart';
-import '../../../home/controllers/custom_navbar_logout.dart';
+import '../../../home/controllers/main_menu_bar.dart';
 import '../providers/sim_store_provider.dart';
 
 class SimDetailPage extends ConsumerWidget {
   final SimCard simCard;
 
-  const SimDetailPage({Key? key, required this.simCard}) : super(key: key);
+  const SimDetailPage({super.key, required this.simCard});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: const CustomNavbarLogout(),
+      appBar: const MainMenuBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

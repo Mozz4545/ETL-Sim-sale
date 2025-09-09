@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../data/models/sim_card_model.dart';
-import '../../../home/controllers/custom_navbar_logout.dart';
+import '../../../home/controllers/main_menu_bar.dart';
 import '../providers/sim_store_provider.dart';
 import 'sim_detail_page.dart';
 import 'cart_page.dart';
 
 class SimStorePage extends ConsumerStatefulWidget {
-  const SimStorePage({Key? key}) : super(key: key);
+  const SimStorePage({super.key});
 
   @override
   ConsumerState<SimStorePage> createState() => _SimStorePageState();
@@ -26,7 +26,7 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -95,7 +95,7 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
     final cart = ref.watch(cartProvider);
 
     return Scaffold(
-      appBar: const CustomNavbarLogout(),
+      appBar: const MainMenuBar(),
       body: Column(
         children: [
           // Search and Filter Section
@@ -275,13 +275,7 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
                         selectedType = SimCardType.prepaid;
                         break;
                       case 2:
-                        selectedType = SimCardType.postpaid;
-                        break;
-                      case 3:
                         selectedType = SimCardType.tourist;
-                        break;
-                      case 4:
-                        selectedType = SimCardType.business;
                         break;
                       default:
                         selectedType = null;
@@ -350,10 +344,12 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
                   );
                 }
 
+                final width = MediaQuery.of(context).size.width;
+                final crossAxisCount = width < 600 ? 1 : (width < 900 ? 2 : 3);
                 return GridView.builder(
                   padding: const EdgeInsets.all(16),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
                     childAspectRatio: 0.75,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
@@ -550,12 +546,8 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
     switch (type) {
       case SimCardType.prepaid:
         return Colors.blue;
-      case SimCardType.postpaid:
-        return Colors.green;
       case SimCardType.tourist:
         return Colors.orange;
-      case SimCardType.business:
-        return Colors.purple;
     }
   }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../auth/provider/auth_provider.dart';
-import '../../home/controllers/custom_navbar_logout.dart';
+import '../../home/controllers/main_menu_bar.dart';
 import '../../checkout/services/order_service.dart';
 import '../../../core/models/order_model.dart';
 import 'order_detail_page.dart';
@@ -50,7 +50,7 @@ class _OrderHistoryPageState extends ConsumerState<OrderHistoryPage>
     final ordersAsync = ref.watch(userOrdersProvider);
 
     return Scaffold(
-      appBar: const CustomNavbarLogout(),
+      appBar: const MainMenuBar(),
       body: Column(
         children: [
           _buildPageHeader(),
@@ -78,9 +78,9 @@ class _OrderHistoryPageState extends ConsumerState<OrderHistoryPage>
       ),
       child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.history,
-            color: const Color.fromARGB(255, 22, 53, 134),
+            color: Color.fromARGB(255, 22, 53, 134),
             size: 24,
           ),
           const SizedBox(width: 12),

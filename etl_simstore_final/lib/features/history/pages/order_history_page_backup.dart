@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../auth/provider/auth_provider.dart';
-import '../../home/controllers/custom_navbar_logout.dart';
+import '../../home/controllers/main_menu_bar.dart';
 import '../../checkout/services/order_service.dart';
 import '../../../core/models/order_model.dart';
 import 'order_detail_page.dart';
@@ -14,7 +14,7 @@ final orderServiceProvider = Provider<OrderService>((ref) => OrderService());
 final userOrdersProvider = FutureProvider<List<Order>>((ref) async {
   final user = ref.watch(authProvider).user;
   if (user == null) return [];
-  
+
   final orderService = ref.read(orderServiceProvider);
   return orderService.getUserOrders(user.uid);
 });
@@ -41,8 +41,8 @@ class _OrderHistoryPageState extends ConsumerState<OrderHistoryPage>
       phoneNumber: '02023655890',
       type: OrderType.simCard,
       status: OrderStatus.delivered,
-      items: [
-        const OrderItem(
+      items: const [
+        OrderItem(
           id: '1',
           productId: 'sim-001',
           productName: 'ຊິມກາດເປີຍ່າຈ່າຍ',
@@ -67,8 +67,8 @@ class _OrderHistoryPageState extends ConsumerState<OrderHistoryPage>
       phoneNumber: '02055512345',
       type: OrderType.dataPackage,
       status: OrderStatus.processing,
-      items: [
-        const OrderItem(
+      items: const [
+        OrderItem(
           id: '2',
           productId: 'pkg-001',
           productName: 'ແພັກເກດຂໍ້ມູນ 10GB',
@@ -92,8 +92,8 @@ class _OrderHistoryPageState extends ConsumerState<OrderHistoryPage>
       phoneNumber: '02098765432',
       type: OrderType.ftth,
       status: OrderStatus.cancelled,
-      items: [
-        const OrderItem(
+      items: const [
+        OrderItem(
           id: '3',
           productId: 'ftth-001',
           productName: 'FTTH 100 Mbps',
@@ -126,7 +126,7 @@ class _OrderHistoryPageState extends ConsumerState<OrderHistoryPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomNavbarLogout(),
+      appBar: const MainMenuBar(),
       body: Column(
         children: [
           _buildPageHeader(),

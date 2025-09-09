@@ -7,10 +7,10 @@ plugins {
 
 android {
     namespace = "com.example.etl_simstore_final"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35  // เปลี่ยนจาก flutter.compileSdkVersion เป็น 35
 
-    // ระบุ NDK version ที่ติดตั้งจริง
-    ndkVersion = "25.2.9519653"
+    // เปลี่ยน NDK version เป็นตัวที่ plugins ต้องการ
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -24,7 +24,7 @@ android {
     defaultConfig {
         applicationId = "com.example.etl_simstore_final"
         minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 35  // เปลี่ยนจาก flutter.targetSdkVersion เป็น 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }

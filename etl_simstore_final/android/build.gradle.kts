@@ -11,20 +11,14 @@ rootProject.layout.buildDirectory.value(newBuildDir)
 subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
-}
-subprojects {
-    project.evaluationDependsOn(":app")
-}
-
-// Ensure compileSdkVersion and targetSdkVersion are up-to-date
-subprojects {
+    
     afterEvaluate {
         if (project.hasProperty("android")) {
             project.extensions.getByName("android").apply {
                 this as com.android.build.gradle.BaseExtension
-                compileSdkVersion(33)
+                compileSdkVersion(35)  // เปลี่ยนจาก 34 เป็น 35
                 defaultConfig {
-                    targetSdkVersion(33)
+                    targetSdkVersion(35)  // เปลี่ยนจาก 34 เป็น 35
                 }
             }
         }

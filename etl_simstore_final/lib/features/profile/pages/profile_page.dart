@@ -1,378 +1,398 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../../auth/auth.dart';
-import '../../home/controllers/custom_navbar_logout.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import '../../home/controllers/main_menu_bar.dart';
+import './_profile_field.dart';
 
-class ProfilePage extends ConsumerStatefulWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  ConsumerState<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends ConsumerState<ProfilePage> {
-  @override
-  void initState() {
-    super.initState();
-    // เริ่ม Session Management เมื่อเข้าหน้า Profile
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      SessionManager.setProviderRef(ref);
-    });
+class _ProfilePageState extends State<ProfilePage> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _villageController = TextEditingController();
+  final TextEditingController _districtController = TextEditingController();
+  final TextEditingController _provinceController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  File? _profileImage;
+  bool _editing = true;
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
+    if (picked != null) {
+      setState(() {
+        _profileImage = File(picked.path);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider);
-    final isAuthenticated = ref.watch(isAuthenticatedProvider);
-
+    OutlineInputBorder border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(24),
+      borderSide: const BorderSide(color: Color(0xFF4F8FFF), width: 1.2),
+    );
     return Scaffold(
-      appBar: const CustomNavbarLogout(),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 22, 53, 134),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'ບັນຊີຜູ້ໃຊ້',
-                    style: GoogleFonts.notoSansLaoLooped(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'ຈັດການຂໍ້ມູນສ່ວນຕົວແລະການຕັ້ງຄ່າບັນຊີ',
-                    style: GoogleFonts.notoSansLaoLooped(
-                      fontSize: 16,
-                      color: Colors.white.withOpacity(0.9),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            if (!isAuthenticated) ...[
-              // ถ้ายังไม่ Login
-              _buildNotLoggedInCard(),
-            ] else ...[
-              // ถ้า Login แล้ว
-              _buildUserInfoCard(user),
-              const SizedBox(height: 16),
-              _buildSessionInfoCard(),
-              const SizedBox(height: 16),
-              _buildQuickActionsCard(),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNotLoggedInCard() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Container(
+      appBar: const MainMenuBar(),
+      body: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.red.shade300),
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF4F8FFF), Color(0xFFB6D0FF), Color(0xFFF6F8FF)],
+          ),
         ),
-        child: Column(
-          children: [
-            Icon(Icons.person_off, size: 64, color: Colors.red.shade400),
-            const SizedBox(height: 16),
-            Text(
-              'ຍັງບໍ່ໄດ້ເຂົ້າສູ່ລະບົບ',
-              style: GoogleFonts.notoSansLaoLooped(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.red.shade700,
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+            child: Card(
+              color: Colors.white.withOpacity(0.95),
+              elevation: 12,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(32),
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'ກະລຸນາເຂົ້າສູ່ລະບົບເພື່ອເບິ່ງຂໍ້ມູນບັນຊີ',
-              style: GoogleFonts.notoSansLaoLooped(
-                fontSize: 16,
-                color: Colors.grey.shade600,
-              ),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: () => Navigator.pushNamed(context, '/login'),
-              icon: const Icon(Icons.login),
-              label: Text(
-                'ເຂົ້າສູ່ລະບົບ',
-                style: GoogleFonts.notoSansLaoLooped(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 22, 53, 134),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUserInfoCard(user) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 32,
-                  backgroundColor: const Color.fromARGB(255, 22, 53, 134),
-                  child: Text(
-                    user?.email?.substring(0, 1).toUpperCase() ?? 'U',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: _formKey,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        'ຂໍ້ມູນຜູ້ໃຊ້',
-                        style: GoogleFonts.notoSansLaoLooped(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: const Color.fromARGB(255, 22, 53, 134),
-                        ),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 54,
+                            backgroundColor: const Color(0xFF4F8FFF),
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundImage: _profileImage != null
+                                  ? FileImage(_profileImage!)
+                                  : null,
+                              child: _profileImage == null
+                                  ? const Icon(
+                                      Icons.person,
+                                      size: 50,
+                                      color: Colors.white,
+                                    )
+                                  : null,
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: _pickImage,
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 4,
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.camera_alt,
+                                  color: Color(0xFF4F8FFF),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        user?.email ?? 'ບໍ່ມີຂໍ້ມູນ',
-                        style: GoogleFonts.notoSansLaoLooped(
-                          fontSize: 16,
-                          color: Colors.grey.shade600,
+                      const SizedBox(height: 32),
+                      if (_editing) ...[
+                        TextFormField(
+                          controller: _firstNameController,
+                          decoration: InputDecoration(
+                            labelText: 'ຊື່',
+                            prefixIcon: const Icon(Icons.person_outline),
+                            border: border,
+                            enabledBorder: border,
+                            focusedBorder: border.copyWith(
+                              borderSide: const BorderSide(
+                                color: Color(0xFF4F8FFF),
+                                width: 2,
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 18,
+                              horizontal: 20,
+                            ),
+                          ),
+                          style: const TextStyle(fontSize: 17),
+                          validator: (v) =>
+                              v == null || v.isEmpty ? 'ກະລຸນາປ້ອນຊື່' : null,
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _lastNameController,
+                          decoration: InputDecoration(
+                            labelText: 'ນາມສະກຸນ',
+                            prefixIcon: const Icon(Icons.person_outline),
+                            border: border,
+                            enabledBorder: border,
+                            focusedBorder: border.copyWith(
+                              borderSide: const BorderSide(
+                                color: Color(0xFF4F8FFF),
+                                width: 2,
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 18,
+                              horizontal: 20,
+                            ),
+                          ),
+                          style: const TextStyle(fontSize: 17),
+                          validator: (v) => v == null || v.isEmpty
+                              ? 'ກະລຸນາປ້ອນນາມສະກຸນ'
+                              : null,
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            prefixIcon: const Icon(Icons.email_outlined),
+                            border: border,
+                            enabledBorder: border,
+                            focusedBorder: border.copyWith(
+                              borderSide: const BorderSide(
+                                color: Color(0xFF4F8FFF),
+                                width: 2,
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 18,
+                              horizontal: 20,
+                            ),
+                          ),
+                          style: const TextStyle(fontSize: 17),
+                          validator: (v) => v == null || v.isEmpty
+                              ? 'ກະລຸນາປ້ອນ Email'
+                              : null,
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _phoneController,
+                          decoration: InputDecoration(
+                            labelText: 'ເບີໂທ',
+                            prefixIcon: const Icon(Icons.phone_outlined),
+                            border: border,
+                            enabledBorder: border,
+                            focusedBorder: border.copyWith(
+                              borderSide: const BorderSide(
+                                color: Color(0xFF4F8FFF),
+                                width: 2,
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 18,
+                              horizontal: 20,
+                            ),
+                          ),
+                          style: const TextStyle(fontSize: 17),
+                          validator: (v) =>
+                              v == null || v.isEmpty ? 'ກະລຸນາປ້ອນເບີໂທ' : null,
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _villageController,
+                          decoration: InputDecoration(
+                            labelText: 'ບ້ານ',
+                            prefixIcon: const Icon(Icons.home_outlined),
+                            border: border,
+                            enabledBorder: border,
+                            focusedBorder: border.copyWith(
+                              borderSide: const BorderSide(
+                                color: Color(0xFF4F8FFF),
+                                width: 2,
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 18,
+                              horizontal: 20,
+                            ),
+                          ),
+                          style: const TextStyle(fontSize: 17),
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _districtController,
+                          decoration: InputDecoration(
+                            labelText: 'ເມືອງ',
+                            prefixIcon: const Icon(
+                              Icons.location_city_outlined,
+                            ),
+                            border: border,
+                            enabledBorder: border,
+                            focusedBorder: border.copyWith(
+                              borderSide: const BorderSide(
+                                color: Color(0xFF4F8FFF),
+                                width: 2,
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 18,
+                              horizontal: 20,
+                            ),
+                          ),
+                          style: const TextStyle(fontSize: 17),
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _provinceController,
+                          decoration: InputDecoration(
+                            labelText: 'ແຂວງ',
+                            prefixIcon: const Icon(Icons.map_outlined),
+                            border: border,
+                            enabledBorder: border,
+                            focusedBorder: border.copyWith(
+                              borderSide: const BorderSide(
+                                color: Color(0xFF4F8FFF),
+                                width: 2,
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 18,
+                              horizontal: 20,
+                            ),
+                          ),
+                          style: const TextStyle(fontSize: 17),
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _addressController,
+                          decoration: InputDecoration(
+                            labelText: 'ທີ່ຢູ່ຈັດສົ່ງ',
+                            prefixIcon: const Icon(Icons.location_on_outlined),
+                            border: border,
+                            enabledBorder: border,
+                            focusedBorder: border.copyWith(
+                              borderSide: const BorderSide(
+                                color: Color(0xFF4F8FFF),
+                                width: 2,
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 18,
+                              horizontal: 20,
+                            ),
+                          ),
+                          style: const TextStyle(fontSize: 17),
+                        ),
+                        const SizedBox(height: 16),
+                      ] else ...[
+                        ProfileField(
+                          label: 'ຊື່',
+                          value: _firstNameController.text,
+                          icon: Icons.person_outline,
+                        ),
+                        ProfileField(
+                          label: 'ທີ່ຢູ່ຈັດສົ່ງ',
+                          value: _addressController.text,
+                          icon: Icons.location_on_outlined,
+                        ),
+                        ProfileField(
+                          label: 'ນາມສະກຸນ',
+                          value: _lastNameController.text,
+                          icon: Icons.person_outline,
+                        ),
+                        ProfileField(
+                          label: 'Email',
+                          value: _emailController.text,
+                          icon: Icons.email_outlined,
+                        ),
+                        ProfileField(
+                          label: 'ເບີໂທ',
+                          value: _phoneController.text,
+                          icon: Icons.phone_outlined,
+                        ),
+                        ProfileField(
+                          label: 'ບ້ານ',
+                          value: _villageController.text,
+                          icon: Icons.home_outlined,
+                        ),
+                        ProfileField(
+                          label: 'ເມືອງ',
+                          value: _districtController.text,
+                          icon: Icons.location_city_outlined,
+                        ),
+                        ProfileField(
+                          label: 'ແຂວງ',
+                          value: _provinceController.text,
+                          icon: Icons.map_outlined,
+                        ),
+                        const SizedBox(height: 32),
+                      ],
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          icon: Icon(_editing ? Icons.save : Icons.edit),
+                          label: Text(_editing ? 'ບັນທຶກ' : 'ແກ້ໄຂ'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF4F8FFF),
+                            foregroundColor: Colors.white,
+                            minimumSize: const Size.fromHeight(48),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed: () {
+                            if (_editing) {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() => _editing = false);
+                              }
+                            } else {
+                              setState(() => _editing = true);
+                            }
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-            const Divider(),
-            const SizedBox(height: 16),
-
-            _buildInfoRow('ອີເມວ:', user?.email ?? 'ບໍ່ມີຂໍ້ມູນ'),
-            _buildInfoRow('ສະຖານະ:', 'ເຂົ້າສູ່ລະບົບແລ້ວ'),
-            _buildInfoRow('ບົດບາດ:', 'ລູກຄ້າ'),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSessionInfoCard() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'ຂໍ້ມູນ Session',
-              style: GoogleFonts.notoSansLaoLooped(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: const Color.fromARGB(255, 22, 53, 134),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Session Info Widget แบบ Embedded
-            const SessionInfoWidget(),
-
-            const SizedBox(height: 16),
-
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      SessionManager.updateActivity();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'ອັບເດດການເຄື່ອນໄຫວແລ້ວ',
-                            style: GoogleFonts.notoSansLaoLooped(),
-                          ),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: Text(
-                      'ອັບເດດການເຄື່ອນໄຫວ',
-                      style: GoogleFonts.notoSansLaoLooped(),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildQuickActionsCard() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'ການກະທຳດ່ວນ',
-              style: GoogleFonts.notoSansLaoLooped(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: const Color.fromARGB(255, 22, 53, 134),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            Row(
-              children: [
-                Expanded(
-                  child: _buildActionButton(
-                    'ປະຫວັດການສັ່ງຊື້',
-                    Icons.history,
-                    () => Navigator.pushNamed(context, '/order-history'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildActionButton(
-                    'ຮ້ານ SIM',
-                    Icons.store,
-                    () => Navigator.pushNamed(context, '/sim-store'),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 12),
-
-            Row(
-              children: [
-                Expanded(
-                  child: _buildActionButton(
-                    'ກະຕ່າ',
-                    Icons.shopping_cart,
-                    () => Navigator.pushNamed(context, '/cart'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildActionButton(
-                    'ໜ້າຫຼັກ',
-                    Icons.home,
-                    () => Navigator.pushNamed(context, '/home'),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              label,
-              style: GoogleFonts.notoSansLaoLooped(
-                fontWeight: FontWeight.bold,
-                color: Colors.grey.shade700,
               ),
             ),
           ),
-          Expanded(
-            child: Text(
-              value,
-              style: GoogleFonts.notoSansLaoLooped(color: Colors.grey.shade800),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionButton(
-    String label,
-    IconData icon,
-    VoidCallback onPressed,
-  ) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon),
-      label: Text(label, style: GoogleFonts.notoSansLaoLooped()),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 22, 53, 134),
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       ),
     );
   }

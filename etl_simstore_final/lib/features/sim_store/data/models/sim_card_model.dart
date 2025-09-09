@@ -1,19 +1,13 @@
 enum SimCardType {
   prepaid,
-  postpaid,
-  tourist,
-  business;
+  tourist;
 
   String get displayName {
     switch (this) {
       case SimCardType.prepaid:
         return 'เติมเงิน';
-      case SimCardType.postpaid:
-        return 'รายเดือน';
       case SimCardType.tourist:
         return 'นักท่องเที่ยว';
-      case SimCardType.business:
-        return 'ธุรกิจ';
     }
   }
 }

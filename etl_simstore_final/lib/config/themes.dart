@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // Light Theme
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: Colors.blue,
   colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.amber),
-  fontFamily: 'NotoSansLao',
+  fontFamily: GoogleFonts.notoSansLao().fontFamily,
   textTheme: const TextTheme(
     displayLarge: TextStyle(
       fontSize: 32,
@@ -30,7 +31,7 @@ final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Colors.grey[900],
   colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.tealAccent),
-  fontFamily: 'NotoSansLao',
+  fontFamily: GoogleFonts.notoSansLao().fontFamily,
   textTheme: const TextTheme(
     displayLarge: TextStyle(
       fontSize: 32,

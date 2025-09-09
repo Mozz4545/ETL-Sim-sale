@@ -1,8 +1,9 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../auth/auth.dart';
-import '../../home/controllers/custom_navbar_logout.dart';
+import '../../home/controllers/main_menu_bar.dart';
 import '../../../core/models/order_model.dart';
 
 class OrderDetailPage extends ConsumerWidget {
@@ -10,13 +11,22 @@ class OrderDetailPage extends ConsumerWidget {
 
   const OrderDetailPage({super.key, this.order});
 
+  Future<Order?> fetchOrderById(String orderId) async {
+    final ref = FirebaseDatabase.instance.ref('orders/$orderId');
+    final snapshot = await ref.get();
+    if (snapshot.exists) {
+      return Order.fromJson(Map<String, dynamic>.from(snapshot.value as Map));
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // ตั้งค่า provider reference สำหรับ session management
     SessionManager.setProviderRef(ref);
 
     return Scaffold(
-      appBar: const CustomNavbarLogout(),
+      appBar: const MainMenuBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -160,6 +170,11 @@ class OrderDetailPage extends ConsumerWidget {
                 const SizedBox(height: 8),
                 _buildDetailRow('ໝາຍເຫດ:', order!.notes!),
               ],
+              if (order?.paymentMethod != null)
+                _buildDetailRow(
+                  '\u0ea7\u0eb4\u0e97\u0eb5\u0e88\u0ec8\u0eb2\u0e8d\u0ec0\u0e87\u0eb4\u0e99:',
+                  order!.paymentMethod!.displayName,
+                ),
             ],
           ),
         ),

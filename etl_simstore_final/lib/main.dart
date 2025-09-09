@@ -1,16 +1,16 @@
+import 'app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'features/home/pages/home_page.dart';
-import 'features/auth/pages/login_screen.dart';
-import 'features/auth/pages/splash_page.dart';
-import 'features/auth/pages/signup_screen.dart';
 import 'features/auth/auth.dart';
 import 'features/history/pages/order_detail_page.dart';
 import 'features/history/pages/order_history_page.dart';
-import 'features/sim_store/pages/sim_store_page.dart';
+import 'features/sim_store/presentation/pages/sim_store_page.dart';
+
 import 'features/checkout/pages/checkout_page.dart';
+import 'features/profile/pages/profile_page.dart';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -45,24 +45,27 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
-      title: 'ETL Application',
-      theme: ThemeData(
-        textTheme: GoogleFonts.notoSansLaoTextTheme(),
-        primarySwatch: Colors.blue,
-        fontFamily: 'NotoSansLao',
+    return SessionTimeoutWrapper(
+      child: MaterialApp(
+        title: 'ETL Application',
+        theme: ThemeData(
+          textTheme: GoogleFonts.notoSansLaoTextTheme(),
+          primarySwatch: Colors.blue,
+          fontFamily: 'NotoSansLao',
+        ),
+        home: const SplashPage(),
+        routes: {
+          '/splash': (context) => const SplashPage(),
+          '/login': (context) => const LoginScreen(),
+          '/signup': (context) => const SignUpScreen(),
+          '/home': (context) => const HomePage(),
+          '/order-history': (context) => const OrderHistoryPage(),
+          '/order-detail': (context) => const OrderDetailPage(),
+          '/sim-store': (context) => const SimStorePage(),
+          '/checkout': (context) => const CheckoutPage(),
+          '/profile': (context) => const ProfilePage(),
+        },
       ),
-      home: const SplashPage(), // เปลี่ยนกลับเป็น SplashPage
-      routes: {
-        '/splash': (context) => const SplashPage(),
-        '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const SignUpScreen(),
-        '/home': (context) => const HomePage(),
-        '/order-history': (context) => const OrderHistoryPage(),
-        '/order-detail': (context) => const OrderDetailPage(),
-        '/sim-store': (context) => const SimStorePage(),
-        '/checkout': (context) => const CheckoutPage(),
-      },
     );
   }
 }

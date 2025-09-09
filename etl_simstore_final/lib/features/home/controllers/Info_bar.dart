@@ -49,19 +49,19 @@ class InfoBar extends StatelessWidget {
             child: Text.rich(
               TextSpan(
                 text: '© ',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.notoSansLao(
                   color: isDark ? Colors.white70 : Colors.white,
                   fontSize: 13,
                 ),
-                children: [
+                children: const [
                   TextSpan(
                     text: 'ETL Shopping',
-                    style: const TextStyle(
+                    style: TextStyle(
                       decoration: TextDecoration.underline,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const TextSpan(
+                  TextSpan(
                     text:
                         ' - @ETL Company Ltd, Business Support Division, Software Development',
                   ),
@@ -96,7 +96,7 @@ class InfoBar extends StatelessWidget {
       children: [
         Text(
           'Get In Touch',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.notoSansLao(
             fontWeight: FontWeight.w600,
             fontSize: 20,
             color: textColor,
@@ -142,7 +142,7 @@ class InfoBar extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.notoSansLao(
               color: textColor,
               fontSize: 14,
               height: 1.4,

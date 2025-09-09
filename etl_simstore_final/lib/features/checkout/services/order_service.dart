@@ -12,6 +12,7 @@ class OrderService {
     required String phoneNumber,
     required String deliveryAddress,
     String? notes,
+    models.PaymentMethod paymentMethod = models.PaymentMethod.cashOnDelivery,
     required List<CartItem> cartItems,
   }) async {
     try {
@@ -47,6 +48,7 @@ class OrderService {
         phoneNumber: phoneNumber,
         type: models.OrderType.simCard,
         status: models.OrderStatus.pending,
+        paymentMethod: paymentMethod,
         items: orderItems,
         subtotal: subtotal,
         tax: tax,
