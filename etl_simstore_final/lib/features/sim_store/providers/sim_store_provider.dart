@@ -152,18 +152,12 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
   CartNotifier() : super([]);
 
   void addToCart(SimCard simCard) {
-    final existingIndex = state.indexWhere((item) => item.simId == simCard.id);
-
-    if (existingIndex >= 0) {
-      // Update quantity if item already exists
-      final existing = state[existingIndex];
-      state = [
-        ...state.sublist(0, existingIndex),
-        existing.copyWith(quantity: existing.quantity + 1),
-        ...state.sublist(existingIndex + 1),
-      ];
+    final exists = state.any((item) => item.simId == simCard.id);
+    if (exists) {
+      // Do not add duplicate SIM/order
+      return;
     } else {
-      // Add new item
+      // Add new item (only one allowed)
       final newItem = CartItem(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         simId: simCard.id,

@@ -14,7 +14,22 @@ class CartPage extends ConsumerWidget {
     final cartNotifier = ref.read(cartProvider.notifier);
 
     return Scaffold(
-      appBar: const MainMenuBar(),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 22, 53, 134),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          'ກະຕ່າຊື້ຂອງ',
+          style: GoogleFonts.notoSansLao(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 2,
+      ),
       body: cart.isEmpty
           ? _buildEmptyCart(context)
           : Column(

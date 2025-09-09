@@ -14,11 +14,14 @@ class SimStorePage extends ConsumerStatefulWidget {
   ConsumerState<SimStorePage> createState() => _SimStorePageState();
 }
 
-class _SimStorePageState extends ConsumerState<SimStorePage> with SingleTickerProviderStateMixin {
+class _SimStorePageState extends ConsumerState<SimStorePage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _wantedNumbersController = TextEditingController();
-  final TextEditingController _unwantedNumbersController = TextEditingController();
+  final TextEditingController _wantedNumbersController =
+      TextEditingController();
+  final TextEditingController _unwantedNumbersController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -111,7 +114,10 @@ class _SimStorePageState extends ConsumerState<SimStorePage> with SingleTickerPr
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('ວິທີໃຊ້ງານຕົວກອງ', style: GoogleFonts.notoSansLao(fontWeight: FontWeight.w600)),
+        title: Text(
+          'ວິທີໃຊ້ງານຕົວກອງ',
+          style: GoogleFonts.notoSansLao(fontWeight: FontWeight.w600),
+        ),
         content: Text(
           'ກະລຸນາປ້ອນເບີທີ່ຕ້ອງການ ຫຼື ເບີທີ່ບໍ່ຕ້ອງການໃນຊ່ອງທີ່ກຳນົດ',
           style: GoogleFonts.notoSansLao(),
@@ -163,33 +169,6 @@ class _SimStorePageState extends ConsumerState<SimStorePage> with SingleTickerPr
             ),
             child: Column(
               children: [
-                // Search Bar
-                TextField(
-                  controller: _searchController,
-                  onChanged: (value) {
-                    ref.read(searchQueryProvider.notifier).state = value;
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'ຄົ້ນຫາເບີໂທ...',
-                    hintStyle: GoogleFonts.notoSansLao(color: Colors.grey[600]),
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 22, 53, 134),
-                        width: 2,
-                      ),
-                    ),
-                  ),
-                  style: GoogleFonts.notoSansLao(),
-                ),
-                const SizedBox(height: 16),
-
-                // Number Filter Section
                 Row(
                   children: [
                     // Wanted Numbers Filter
@@ -197,7 +176,8 @@ class _SimStorePageState extends ConsumerState<SimStorePage> with SingleTickerPr
                       child: TextField(
                         controller: _wantedNumbersController,
                         onChanged: (value) {
-                          ref.read(wantedNumbersProvider.notifier).state = value;
+                          ref.read(wantedNumbersProvider.notifier).state =
+                              value;
                         },
                         decoration: InputDecoration(
                           hintText: 'ເບີທີ່ຕ້ອງການ (ເຊັ່ນ: 888, 999)',
@@ -230,7 +210,8 @@ class _SimStorePageState extends ConsumerState<SimStorePage> with SingleTickerPr
                       child: TextField(
                         controller: _unwantedNumbersController,
                         onChanged: (value) {
-                          ref.read(unwantedNumbersProvider.notifier).state = value;
+                          ref.read(unwantedNumbersProvider.notifier).state =
+                              value;
                         },
                         decoration: InputDecoration(
                           hintText: 'ເບີທີ່ບໍ່ຕ້ອງການ (ເຊັ່ນ: 4, 666)',
@@ -327,7 +308,8 @@ class _SimStorePageState extends ConsumerState<SimStorePage> with SingleTickerPr
                       default:
                         selectedType = null;
                     }
-                    ref.read(simTypeFilterProvider.notifier).state = selectedType;
+                    ref.read(simTypeFilterProvider.notifier).state =
+                        selectedType;
                   },
                   tabs: const [
                     Tab(text: 'ທັງໝົດ'),
@@ -363,10 +345,14 @@ class _SimStorePageState extends ConsumerState<SimStorePage> with SingleTickerPr
             ),
           ),
 
-          // SIM Cards List
+          // =============================
+          // ส่วนแสดงรายการซิมการ์ด (SIM Cards List)
+          // =============================
           Expanded(
             child: filteredSims.when(
+              // ถ้ามีข้อมูลซิม
               data: (sims) {
+                // ถ้าไม่มีซิมที่ตรงกับเงื่อนไข
                 if (sims.isEmpty) {
                   return Center(
                     child: Column(
@@ -390,24 +376,29 @@ class _SimStorePageState extends ConsumerState<SimStorePage> with SingleTickerPr
                   );
                 }
 
+                // Responsive: กำหนดจำนวนคอลัมน์ตามขนาดหน้าจอ
                 final width = MediaQuery.of(context).size.width;
                 final crossAxisCount = width < 600 ? 1 : (width < 900 ? 2 : 3);
+                // แสดงรายการซิมใน GridView
                 return GridView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(30),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    childAspectRatio: 0.75,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
+                    crossAxisCount: crossAxisCount, // จำนวนคอลัมน์
+                    childAspectRatio: 0.75, // อัตราส่วนกว้าง:สูง ของแต่ละช่อง
+                    crossAxisSpacing: 4,
+                    mainAxisSpacing: 4,
                   ),
                   itemCount: sims.length,
                   itemBuilder: (context, index) {
                     final sim = sims[index];
+                    // เรียกใช้ widget สำหรับแสดงข้อมูลแต่ละซิม
                     return _buildSimCard(context, sim);
                   },
                 );
               },
+              // กำลังโหลดข้อมูล
               loading: () => const Center(child: CircularProgressIndicator()),
+              // ถ้าเกิด error
               error: (error, stackTrace) => Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -455,105 +446,125 @@ class _SimStorePageState extends ConsumerState<SimStorePage> with SingleTickerPr
     );
   }
 
+  // =============================
+  // Widget สำหรับแสดงข้อมูลซิมแต่ละใบ (SIM Card)
+  // =============================
   Widget _buildSimCard(BuildContext context, SimCard sim) {
     return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: InkWell(
         onTap: () {
+          // เมื่อกดที่ซิม จะไปหน้า SimDetailPage
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => SimDetailPage(simCard: sim),
             ),
           );
         },
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
         child: Padding(
-          padding: const EdgeInsets.all(6),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // SIM Type Badge
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: _getTypeColor(sim.type),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  sim.type.displayName,
-                  style: GoogleFonts.notoSansLao(
-                    fontSize: 10,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          child: SizedBox(
+            height: 1,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Badge แสดงประเภทซิม (prepaid/tourist)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
                   ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              // Phone Number
-              Text(
-                sim.phoneNumber,
-                style: GoogleFonts.notoSansLao(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: const Color.fromARGB(255, 22, 53, 134),
-                ),
-              ),
-              const SizedBox(height: 4),
-              // Package Name
-              if (sim.packageName != null)
-                Text(
-                  sim.packageName!,
-                  style: GoogleFonts.notoSansLao(
-                    fontSize: 12,
-                    color: Colors.grey[600],
+                  decoration: BoxDecoration(
+                    color: _getTypeColor(sim.type),
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              const Spacer(),
-              // Price and Special Number
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${sim.price.toStringAsFixed(0)} ກີບ',
-                          style: GoogleFonts.notoSansLao(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.green[700],
-                          ),
-                        ),
-                        if (sim.isSpecialNumber)
-                          Container(
-                            margin: const EdgeInsets.only(top: 4),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.amber[100],
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              'ເບີພິເສດ',
-                              style: GoogleFonts.notoSansLao(
-                                fontSize: 10,
-                                color: Colors.brown[800],
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                      ],
+                  child: Text(
+                    sim.type.displayName,
+                    style: GoogleFonts.notoSansLao(
+                      fontSize: 9,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 4),
+
+                // โลโก้ ETL ตรงกลาง
+                const SizedBox(height: 4),
+                // แสดงเบอร์โทรศัพท์
+                Text(
+                  sim.phoneNumber,
+                  style: GoogleFonts.notoSansLao(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: const Color.fromARGB(255, 22, 53, 134),
+                  ),
+                ),
+                // แสดงชื่อแพ็กเกจ (ถ้ามี)
+                if (sim.packageName != null)
+                  Text(
+                    sim.packageName!,
+                    style: GoogleFonts.notoSansLao(
+                      fontSize: 10,
+                      color: Colors.grey[600],
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                Center(
+                  child: Image.asset(
+                    'assets/ETL_logo.jpg',
+                    width: 150,
+                    height: 200,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const Spacer(),
+                // แสดงราคา และ badge "เบอร์พิเศษ" ถ้าเป็นเบอร์สวย
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${sim.price.toStringAsFixed(0)} ກີບ',
+                            style: GoogleFonts.notoSansLao(
+                              fontSize: 26,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.green[700],
+                            ),
+                          ),
+                          if (sim.isSpecialNumber)
+                            Container(
+                              margin: const EdgeInsets.only(top: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 5,
+                                vertical: 1,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.amber[100],
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                              child: Text(
+                                'ເບີພິເສດ',
+                                style: GoogleFonts.notoSansLao(
+                                  fontSize: 8,
+                                  color: Colors.brown[800],
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

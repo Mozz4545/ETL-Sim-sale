@@ -20,11 +20,11 @@ enum SimCardStatus {
   String get displayName {
     switch (this) {
       case SimCardStatus.available:
-        return 'พร้อมใช้งาน';
+        return 'ພ້ອມຈຳໜ່າຍ';
       case SimCardStatus.reserved:
-        return 'จองแล้ว';
+        return 'ຈອງແລ້ວ';
       case SimCardStatus.sold:
-        return 'ขายแล้ว';
+        return 'ຂາຍແລ້ວ';
     }
   }
 }

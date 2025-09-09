@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../features/auth/service/auth_service.dart';
 import '../../checkout/pages/checkout_page.dart';
 import '../../../features/auth/provider/auth_provider.dart';
+import '../../sim_store/presentation/pages/cart_page.dart';
+import '../../sim_store/providers/sim_store_provider.dart';
 
 class MainMenuBar extends ConsumerWidget implements PreferredSizeWidget {
   final VoidCallback? onLogout;
@@ -16,6 +18,7 @@ class MainMenuBar extends ConsumerWidget implements PreferredSizeWidget {
     final bool isWide = width >= 800;
     final authStream = ref.watch(authStreamProvider);
     final bool isAuthenticated = authStream.asData?.value != null;
+    final cart = ref.watch(cartProvider);
 
     return SizedBox(
       height: isWide ? 120 : 72,
@@ -168,35 +171,39 @@ class MainMenuBar extends ConsumerWidget implements PreferredSizeWidget {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const CheckoutPage(),
+                                          // Use CartPage instead of CheckoutPage
+                                          // Import if needed
+                                          // ignore: prefer_const_constructors
+                                          CartPage(),
                                     ),
                                   );
                                 },
                               ),
-                              Positioned(
-                                right: 4,
-                                top: 4,
-                                child: Container(
-                                  padding: const EdgeInsets.all(1),
-                                  decoration: const BoxDecoration(
-                                    color: Color.fromARGB(255, 255, 0, 0),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 16,
-                                    minHeight: 16,
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      '0',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 10,
+                              if (cart.isNotEmpty)
+                                Positioned(
+                                  right: 4,
+                                  top: 4,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(1),
+                                    decoration: const BoxDecoration(
+                                      color: Color.fromARGB(255, 255, 0, 0),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    constraints: const BoxConstraints(
+                                      minWidth: 16,
+                                      minHeight: 16,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '${cart.length}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                           const SizedBox(width: 24),
