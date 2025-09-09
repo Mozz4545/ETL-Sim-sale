@@ -13,18 +13,86 @@ class SimService {
 
   // ดึง SIM Cards ทั้งหมด
   Future<List<SimCard>> getSimCards() async {
-    try {
-      final snapshot = await _firestore
-          .collection('sim_cards')
-          .where('status', isEqualTo: SimCardStatus.available.name)
-          .get();
-
-      return snapshot.docs
-          .map((doc) => SimCard.fromJson({...doc.data(), 'id': doc.id}))
-          .toList();
-    } catch (e) {
-      throw Exception('Failed to fetch SIM cards: $e');
-    }
+    // MOCK DATA ສຳລັບທົດສອບ UI
+    return [
+      SimCard(
+        id: '1',
+        phoneNumber: '02022335252',
+        packageName: 'ແພັກເກດ A',
+        price: 100000,
+        monthlyFee: null,
+        type: SimCardType.prepaid,
+        status: SimCardStatus.available,
+        createdAt: DateTime.now(),
+        description: 'ຊິມເຕີມເງິນ ເບີສວຍ',
+        features: ['4G', 'ໂທຣຟຣີ'],
+        notes: null,
+      ),
+      SimCard(
+        id: '2',
+        phoneNumber: '02024458996',
+        packageName: 'ແພັກເກດ B',
+        price: 120000,
+        monthlyFee: null,
+        type: SimCardType.tourist,
+        status: SimCardStatus.available,
+        createdAt: DateTime.now(),
+        description: 'ຊິມນັກທ່ອງທ່ຽວ',
+        features: ['ເນັດບໍ່ຈຳກັດ', 'ໂທຣຟຣີ'],
+        notes: null,
+      ),
+      SimCard(
+        id: '3',
+        phoneNumber: '23314556',
+        packageName: 'ແພັກເກດ C',
+        price: 90000,
+        monthlyFee: null,
+        type: SimCardType.prepaid,
+        status: SimCardStatus.available,
+        createdAt: DateTime.now(),
+        description: 'ຊິມເຕີມເງິນ ລາຄາປະຫຍັດ',
+        features: ['ໂທຣຟຣີ'],
+        notes: null,
+      ),
+      SimCard(
+        id: '4',
+        phoneNumber: '02022215789',
+        packageName: 'ແພັກເກດ D',
+        price: 150000,
+        monthlyFee: null,
+        type: SimCardType.tourist,
+        status: SimCardStatus.available,
+        createdAt: DateTime.now(),
+        description: 'ຊິມນັກທ່ອງທ່ຽວ ເບີສວຍ',
+        features: ['4G', 'ເນັດບໍ່ຈຳກັດ'],
+        notes: null,
+      ),
+      SimCard(
+        id: '5',
+        phoneNumber: '02028856344',
+        packageName: 'ແພັກເກດ E',
+        price: 110000,
+        monthlyFee: null,
+        type: SimCardType.prepaid,
+        status: SimCardStatus.available,
+        createdAt: DateTime.now(),
+        description: 'ຊິມເຕີມເງິນ ເບີມົງຄຸນ',
+        features: ['ໂທຣຟຣີ', '4G'],
+        notes: null,
+      ),
+    ];
+    // --- ຖ້າຕ້ອງການດຶງຈາກ Firestore ໃຫ້ uncomment ດ້ານລຸ່ມ ---
+    // try {
+    //   final snapshot = await _firestore
+    //       .collection('sim_cards')
+    //       .where('status', isEqualTo: SimCardStatus.available.name)
+    //       .get();
+    //   return snapshot.docs
+    //       .map((doc) => SimCard.fromJson({...doc.data(), 'id': doc.id}))
+    //       .toList();
+    // } catch (e) {
+    //   throw Exception('Failed to fetch SIM cards: $e');
+    // }
   }
 
   // ดึง SIM Cards ตาม Type

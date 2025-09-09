@@ -5,9 +5,9 @@ enum SimCardType {
   String get displayName {
     switch (this) {
       case SimCardType.prepaid:
-        return 'เติมเงิน';
+        return 'ເຕີມເງິນ';
       case SimCardType.tourist:
-        return 'นักท่องเที่ยว';
+        return 'ນັກທ່ອງທ່ຽວ';
     }
   }
 }

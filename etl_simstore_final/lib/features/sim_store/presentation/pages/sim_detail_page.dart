@@ -31,7 +31,7 @@ class SimDetailPage extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'SIM Card Details',
+                          'ຂໍ້ມູນ SIM Card',
                           style: GoogleFonts.notoSansLao(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,

@@ -5,7 +5,6 @@ import '../../../features/auth/service/auth_service.dart';
 import '../../checkout/pages/checkout_page.dart';
 import '../../../features/auth/provider/auth_provider.dart';
 
-
 class MainMenuBar extends ConsumerWidget implements PreferredSizeWidget {
   final VoidCallback? onLogout;
 
@@ -13,10 +12,10 @@ class MainMenuBar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-  final width = MediaQuery.of(context).size.width;
-  final bool isWide = width >= 800;
-  final authStream = ref.watch(authStreamProvider);
-  final bool isAuthenticated = authStream.asData?.value != null;
+    final width = MediaQuery.of(context).size.width;
+    final bool isWide = width >= 800;
+    final authStream = ref.watch(authStreamProvider);
+    final bool isAuthenticated = authStream.asData?.value != null;
 
     return SizedBox(
       height: isWide ? 120 : 72,
@@ -203,66 +202,97 @@ class MainMenuBar extends ConsumerWidget implements PreferredSizeWidget {
                           const SizedBox(width: 24),
                           if (isAuthenticated)
                             ElevatedButton(
-                              onPressed: onLogout ?? () async {
-                                final shouldLogout = await showDialog<bool>(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: Text(
-                                      'ຢືນຢັນການອອກຈາກລະບົບ',
-                                      style: GoogleFonts.notoSansLaoLooped(),
-                                    ),
-                                    content: Text(
-                                      'ທ່ານຕ້ອງການອອກຈາກລະບົບບໍ?',
-                                      style: GoogleFonts.notoSansLaoLooped(),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.of(context).pop(false),
-                                        child: Text(
-                                          'ຍົກເລີກ',
-                                          style: GoogleFonts.notoSansLaoLooped(),
+                              onPressed:
+                                  onLogout ??
+                                  () async {
+                                    final shouldLogout = await showDialog<bool>(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text(
+                                          'ຢືນຢັນການອອກຈາກລະບົບ',
+                                          style:
+                                              GoogleFonts.notoSansLaoLooped(),
                                         ),
+                                        content: Text(
+                                          'ທ່ານຕ້ອງການອອກຈາກລະບົບບໍ?',
+                                          style:
+                                              GoogleFonts.notoSansLaoLooped(),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.of(
+                                              context,
+                                            ).pop(false),
+                                            child: Text(
+                                              'ຍົກເລີກ',
+                                              style:
+                                                  GoogleFonts.notoSansLaoLooped(),
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(true),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  const Color.fromARGB(
+                                                    255,
+                                                    255,
+                                                    0,
+                                                    0,
+                                                  ),
+                                            ),
+                                            child: Text(
+                                              'ອອກຈາກລະບົບ',
+                                              style:
+                                                  GoogleFonts.notoSansLaoLooped(
+                                                    color: Colors.white,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      ElevatedButton(
-                                        onPressed: () => Navigator.of(context).pop(true),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color.fromARGB(255, 255, 0, 0),
-                                        ),
-                                        child: Text(
-                                          'ອອກຈາກລະບົບ',
-                                          style: GoogleFonts.notoSansLaoLooped(color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                if (shouldLogout == true) {
-                                  try {
-                                    await ref.read(authProvider.notifier).signOut();
-                                    ref.refresh(authProvider);
-                                    if (context.mounted) {
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        '/splash',
-                                        (route) => false,
-                                      );
+                                    );
+                                    if (shouldLogout == true) {
+                                      try {
+                                        await ref
+                                            .read(authProvider.notifier)
+                                            .signOut();
+                                        ref.refresh(authProvider);
+                                        if (context.mounted) {
+                                          Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            '/splash',
+                                            (route) => false,
+                                          );
+                                        }
+                                      } catch (e) {
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'ເກີດຂໍ້ຜິດພາດ: ${e.toString()}',
+                                              ),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      }
                                     }
-                                  } catch (e) {
-                                    if (context.mounted) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text('ເກີດຂໍ້ຜິດພາດ: ${e.toString()}'),
-                                          backgroundColor: Colors.red,
-                                        ),
-                                      );
-                                    }
-                                  }
-                                }
-                              },
+                                  },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+                                backgroundColor: const Color.fromARGB(
+                                  255,
+                                  255,
+                                  0,
+                                  0,
+                                ),
                                 foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
                               ),
                               child: Text(
                                 'ອອກຈາກລະບົບ',
@@ -271,7 +301,7 @@ class MainMenuBar extends ConsumerWidget implements PreferredSizeWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            )
+                            ),
                         ],
                       ),
                     ],

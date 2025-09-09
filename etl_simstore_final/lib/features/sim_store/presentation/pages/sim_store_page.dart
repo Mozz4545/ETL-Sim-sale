@@ -8,20 +8,17 @@ import 'sim_detail_page.dart';
 import 'cart_page.dart';
 
 class SimStorePage extends ConsumerStatefulWidget {
-  const SimStorePage({super.key});
+  const SimStorePage({Key? key}) : super(key: key);
 
   @override
   ConsumerState<SimStorePage> createState() => _SimStorePageState();
 }
 
-class _SimStorePageState extends ConsumerState<SimStorePage>
-    with SingleTickerProviderStateMixin {
+class _SimStorePageState extends ConsumerState<SimStorePage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _wantedNumbersController =
-      TextEditingController();
-  final TextEditingController _unwantedNumbersController =
-      TextEditingController();
+  final TextEditingController _wantedNumbersController = TextEditingController();
+  final TextEditingController _unwantedNumbersController = TextEditingController();
 
   @override
   void initState() {
@@ -38,46 +35,86 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
     super.dispose();
   }
 
-  void _clearAllFilters() {
-    _searchController.clear();
-    _wantedNumbersController.clear();
-    _unwantedNumbersController.clear();
-    _tabController.animateTo(0);
+  Color _getTypeColor(SimCardType type) {
+    switch (type) {
+      case SimCardType.prepaid:
+        return const Color(0xFF1976D2); // blue
+      case SimCardType.tourist:
+        return const Color(0xFF43A047); // green
+    }
+  }
 
-    ref.read(searchQueryProvider.notifier).state = '';
-    ref.read(wantedNumbersProvider.notifier).state = '';
-    ref.read(unwantedNumbersProvider.notifier).state = '';
-    ref.read(simTypeFilterProvider.notifier).state = null;
-    ref.read(priceRangeFilterProvider.notifier).state = null;
+  void _showPriceFilterDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'ເລືອກລາຄາ',
+          style: GoogleFonts.notoSansLao(fontWeight: FontWeight.w600),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: Text('ທັງໝົດ', style: GoogleFonts.notoSansLao()),
+              onTap: () {
+                ref.read(priceRangeFilterProvider.notifier).state = null;
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              title: Text(
+                'ຕ່ຳກວ່າ 100,000 ກີບ',
+                style: GoogleFonts.notoSansLao(),
+              ),
+              onTap: () {
+                ref.read(priceRangeFilterProvider.notifier).state = PriceRange(
+                  min: 0,
+                  max: 100000,
+                );
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              title: Text(
+                '100,000 - 500,000 ກີບ',
+                style: GoogleFonts.notoSansLao(),
+              ),
+              onTap: () {
+                ref.read(priceRangeFilterProvider.notifier).state = PriceRange(
+                  min: 100000,
+                  max: 500000,
+                );
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              title: Text(
+                'ສູງກວ່າ 500,000 ກີບ',
+                style: GoogleFonts.notoSansLao(),
+              ),
+              onTap: () {
+                ref.read(priceRangeFilterProvider.notifier).state = PriceRange(
+                  min: 500000,
+                  max: double.infinity,
+                );
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _showFilterHelpDialog() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(
-          'ວິທີໃຊ້ງານຕົວກອງ',
-          style: GoogleFonts.notoSansLao(fontWeight: FontWeight.w600),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '• ເບີທີ່ຕ້ອງການ: ປ້ອນເບີທີ່ຢາກຫາ ເຊັ່ນ 888, 999',
-              style: GoogleFonts.notoSansLao(fontSize: 14),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '• ເບີທີ່ບໍ່ຕ້ອງການ: ປ້ອນເບີທີ່ບໍ່ຢາກໃຫ້ມີ ເຊັ່ນ 4, 666',
-              style: GoogleFonts.notoSansLao(fontSize: 14),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '• ແຍກດ້ວຍເຄື່ອງໝາຍຈຸດ (,) ຖ້າມີຫຼາຍເບີ',
-              style: GoogleFonts.notoSansLao(fontSize: 14),
-            ),
-          ],
+        title: Text('ວິທີໃຊ້ງານຕົວກອງ', style: GoogleFonts.notoSansLao(fontWeight: FontWeight.w600)),
+        content: Text(
+          'ກະລຸນາປ້ອນເບີທີ່ຕ້ອງການ ຫຼື ເບີທີ່ບໍ່ຕ້ອງການໃນຊ່ອງທີ່ກຳນົດ',
+          style: GoogleFonts.notoSansLao(),
         ),
         actions: [
           TextButton(
@@ -87,6 +124,18 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
         ],
       ),
     );
+  }
+
+  void _clearAllFilters() {
+    _searchController.clear();
+    _wantedNumbersController.clear();
+    _unwantedNumbersController.clear();
+    ref.read(searchQueryProvider.notifier).state = '';
+    ref.read(wantedNumbersProvider.notifier).state = '';
+    ref.read(unwantedNumbersProvider.notifier).state = '';
+    ref.read(simTypeFilterProvider.notifier).state = null;
+    ref.read(priceRangeFilterProvider.notifier).state = null;
+    _tabController.index = 0;
   }
 
   @override
@@ -148,8 +197,7 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
                       child: TextField(
                         controller: _wantedNumbersController,
                         onChanged: (value) {
-                          ref.read(wantedNumbersProvider.notifier).state =
-                              value;
+                          ref.read(wantedNumbersProvider.notifier).state = value;
                         },
                         decoration: InputDecoration(
                           hintText: 'ເບີທີ່ຕ້ອງການ (ເຊັ່ນ: 888, 999)',
@@ -182,8 +230,7 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
                       child: TextField(
                         controller: _unwantedNumbersController,
                         onChanged: (value) {
-                          ref.read(unwantedNumbersProvider.notifier).state =
-                              value;
+                          ref.read(unwantedNumbersProvider.notifier).state = value;
                         },
                         decoration: InputDecoration(
                           hintText: 'ເບີທີ່ບໍ່ຕ້ອງການ (ເຊັ່ນ: 4, 666)',
@@ -280,8 +327,7 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
                       default:
                         selectedType = null;
                     }
-                    ref.read(simTypeFilterProvider.notifier).state =
-                        selectedType;
+                    ref.read(simTypeFilterProvider.notifier).state = selectedType;
                   },
                   tabs: const [
                     Tab(text: 'ທັງໝົດ'),
@@ -423,7 +469,7 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
         },
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(6),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -444,7 +490,6 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
                 ),
               ),
               const SizedBox(height: 8),
-
               // Phone Number
               Text(
                 sim.phoneNumber,
@@ -455,7 +500,6 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
                 ),
               ),
               const SizedBox(height: 4),
-
               // Package Name
               if (sim.packageName != null)
                 Text(
@@ -468,8 +512,7 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
                   overflow: TextOverflow.ellipsis,
                 ),
               const Spacer(),
-
-              // Price and Features
+              // Price and Special Number
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -499,116 +542,19 @@ class _SimStorePageState extends ConsumerState<SimStorePage>
                             child: Text(
                               'ເບີພິເສດ',
                               style: GoogleFonts.notoSansLao(
-                                fontSize: 8,
-                                color: Colors.amber[800],
-                                fontWeight: FontWeight.w500,
+                                fontSize: 10,
+                                color: Colors.brown[800],
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
                       ],
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      ref.read(cartProvider.notifier).addToCart(sim);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'ເພີ່ມ ${sim.phoneNumber} ເຂົ້າກະຕ່າແລ້ວ',
-                            style: GoogleFonts.notoSansLao(),
-                          ),
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            22,
-                            53,
-                            134,
-                          ),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.add_shopping_cart,
-                      color: Color.fromARGB(255, 22, 53, 134),
-                    ),
-                    iconSize: 20,
-                  ),
                 ],
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Color _getTypeColor(SimCardType type) {
-    switch (type) {
-      case SimCardType.prepaid:
-        return Colors.blue;
-      case SimCardType.tourist:
-        return Colors.orange;
-    }
-  }
-
-  void _showPriceFilterDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'ເລືອກລາຄາ',
-          style: GoogleFonts.notoSansLao(fontWeight: FontWeight.w600),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: Text('ທັງໝົດ', style: GoogleFonts.notoSansLao()),
-              onTap: () {
-                ref.read(priceRangeFilterProvider.notifier).state = null;
-                Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
-              title: Text(
-                'ຕ່ຳກວ່າ 100,000 ກີບ',
-                style: GoogleFonts.notoSansLao(),
-              ),
-              onTap: () {
-                ref.read(priceRangeFilterProvider.notifier).state = PriceRange(
-                  min: 0,
-                  max: 100000,
-                );
-                Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
-              title: Text(
-                '100,000 - 500,000 ກີບ',
-                style: GoogleFonts.notoSansLao(),
-              ),
-              onTap: () {
-                ref.read(priceRangeFilterProvider.notifier).state = PriceRange(
-                  min: 100000,
-                  max: 500000,
-                );
-                Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
-              title: Text(
-                'ສູງກວ່າ 500,000 ກີບ',
-                style: GoogleFonts.notoSansLao(),
-              ),
-              onTap: () {
-                ref.read(priceRangeFilterProvider.notifier).state = PriceRange(
-                  min: 500000,
-                  max: double.infinity,
-                );
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
         ),
       ),
     );
