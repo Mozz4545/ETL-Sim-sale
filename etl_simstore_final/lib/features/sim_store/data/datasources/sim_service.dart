@@ -18,7 +18,6 @@ class SimService {
       SimCard(
         id: '1',
         phoneNumber: '02022335252',
-        packageName: 'ແພັກເກດ A',
         price: 100000,
         monthlyFee: null,
         type: SimCardType.prepaid,
@@ -31,7 +30,6 @@ class SimService {
       SimCard(
         id: '2',
         phoneNumber: '02024458996',
-        packageName: 'ແພັກເກດ B',
         price: 120000,
         monthlyFee: null,
         type: SimCardType.tourist,
@@ -44,7 +42,6 @@ class SimService {
       SimCard(
         id: '3',
         phoneNumber: '23314556',
-        packageName: 'ແພັກເກດ C',
         price: 90000,
         monthlyFee: null,
         type: SimCardType.prepaid,
@@ -57,7 +54,6 @@ class SimService {
       SimCard(
         id: '4',
         phoneNumber: '02022215789',
-        packageName: 'ແພັກເກດ D',
         price: 150000,
         monthlyFee: null,
         type: SimCardType.tourist,
@@ -70,7 +66,6 @@ class SimService {
       SimCard(
         id: '5',
         phoneNumber: '02028856344',
-        packageName: 'ແພັກເກດ E',
         price: 110000,
         monthlyFee: null,
         type: SimCardType.prepaid,
